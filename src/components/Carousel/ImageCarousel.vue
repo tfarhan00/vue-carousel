@@ -564,7 +564,7 @@ export default {
 
 @media (max-width: 784px) {
   .preview-item {
-    flex: 0 0 33.33%;
+    flex: 0 0 calc(33.33% - 0.5rem);
   }
 }
 
