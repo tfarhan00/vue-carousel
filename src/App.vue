@@ -1,15 +1,15 @@
 <script>
-import Carousel from "./components/Carousel/Carousel.vue";
+import ImageCarousel from './components/Carousel/ImageCarousel.vue';
 
 export default {
   components: {
-    Carousel,
+    ImageCarousel,
   },
 };
 </script>
 
 <template>
   <div class="w-screen h-screen flex items-center justify-center bg-slate-200">
-    <Carousel />
+    <ImageCarousel />
   </div>
 </template>

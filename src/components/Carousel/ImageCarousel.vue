@@ -1,5 +1,9 @@
 <template>
-  <div v-if="assets.length > 0" id="carousel-container" v-bind:class="{ 'opened': isOpened, 'carouselContainer': true}">
+  <div
+    v-if="assets.length > 0"
+    id="carousel-container"
+    v-bind:class="{ opened: isOpened, carouselContainer: true }"
+  >
     <div
       id="main-image-viewer"
       class="w-full h-[22rem] max-h-[24rem] rounded-xl bg-white flex overflow-hidden relative"
@@ -110,27 +114,30 @@
       id="preview-image-list"
       class="h-auto w-full flex items-center justify-between gap-2"
     >
-    <div id="prev-btn-container" class="w-20 h-full flex items-center justify-center">
-      <button
-        @click="prevPreviewSlide()"
-        id="prev-btn"
-        class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
+      <div
+        id="prev-btn-container"
+        class="w-20 h-full flex items-center justify-center"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-chevron-left"
-          viewBox="0 0 16 16"
+        <button
+          @click="prevPreviewSlide()"
+          id="prev-btn"
+          class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
         >
-          <path
-            fill-rule="evenodd"
-            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-          />
-        </svg>
-      </button>
-      </div>  
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+        </button>
+      </div>
       <div
         id="preview-container"
         class="h-auto flex items-center overflow-x-auto lg:overflow-hidden"
@@ -164,29 +171,244 @@
         </div>
       </div>
 
-      <div id="next-btn-container" class="w-20 h-full flex items-center justify-center">
-
-      <button
-        @click="nextPreviewSlide()"
-        id="next-btn"
-        class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
+      <div
+        id="next-btn-container"
+        class="w-20 h-full flex items-center justify-center"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-chevron-right"
-          viewBox="0 0 16 16"
+        <button
+          @click="nextPreviewSlide()"
+          id="next-btn"
+          class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
         >
-          <path
-            fill-rule="evenodd"
-            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
-          />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
+  </div>
+  <!-- MODAL SeCTION -->
+  <div
+    v-if="isOpened"
+    @click="toggleModal()"
+    class="z-[98] w-screen h-screen bg-black/40 fixed top-0 left-0 flex items-center justify-center"
+  >
+    <div
+      id="carousel-container"
+      v-bind:class="{ opened: isOpened, carouselContainer: true }"
+    >
+      <div
+        id="main-image-viewer"
+        class="w-full h-[22rem] max-h-[24rem] rounded-xl bg-white flex overflow-hidden relative"
+      >
+        <div
+          class="absolute z-[3] top-0 left-0 p-4 h-full flex items-center justify-center"
+        >
+          <button
+            @click="prevSlide()"
+            id="prev-btn"
+            class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          class="absolute z-[3] top-0 right-0 p-4 h-full flex items-center justify-center"
+        >
+          <button
+            @click="nextSlide()"
+            id="next-btn"
+            class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-right"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          id="image-slider-container"
+          class="w-full h-full flex cursor-pointer"
+        >
+          <div
+            ref="imageSlider"
+            id="image-slider"
+            :style="carouselPos"
+            class="imageSlider"
+          >
+            <div
+              id="image-preview-card"
+              v-for="item in assets"
+              :key="item.id"
+              class="w-full h-full shrink-0"
+            >
+              <div
+                id="video-container"
+                @click="playPauseVideo()"
+                class="w-full h-full relative cursor-pointer"
+                v-if="item.file_type === 'video'"
+              >
+                <video
+                  :src="item.url"
+                  ref="video"
+                  class="w-full h-full object-cover"
+                ></video>
+                <button
+                  v-if="!isPlayed"
+                  class="z-[1] h-20 w-20 flex items-center justify-center text-white text-2xl bg-white/20 rounded-full absolute top-[50%] left-[50%] -translate-y-[50%] -translate-x-[50%]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="35"
+                    height="35"
+                    fill="currentColor"
+                    class="bi bi-play-circle"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                    />
+                    <path
+                      d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div id="img-container" class="w-full h-full" v-else>
+                <img
+                  :src="item.url"
+                  alt=""
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="preview-image-list"
+        class="h-auto w-full flex items-center justify-between gap-2"
+      >
+        <div
+          id="prev-btn-container"
+          class="w-20 h-full flex items-center justify-center"
+        >
+          <button
+            @click="prevPreviewSlide()"
+            id="prev-btn"
+            class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          id="preview-container"
+          class="h-auto flex items-center overflow-x-auto lg:overflow-hidden"
+        >
+          <div
+            id="preview-slide"
+            ref="imagePreviewSlider"
+            :style="carouselPreviewPos"
+            class="imagePreviewSlider"
+          >
+            <div
+              v-for="(item, index) in assets"
+              :key="item.id"
+              :class="[currentSlide === index && 'selected', 'preview-item']"
+            >
+              <div
+                @click="handleImageClick(index)"
+                class="w-full h-full"
+                v-if="item.file_type === 'video'"
+              >
+                <video
+                  :src="item.url"
+                  class="w-full h-full object-cover"
+                ></video>
+              </div>
+              <div
+                @click="handleImageClick(index)"
+                class="w-full h-full"
+                v-else
+              >
+                <img
+                  :src="item.url"
+                  alt="image"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div
+          id="next-btn-container"
+          class="w-20 h-full flex items-center justify-center"
+        >
+          <button
+            @click="nextPreviewSlide()"
+            id="next-btn"
+            class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-right"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -200,10 +422,6 @@ export default {
       type: Function,
       required: true,
     },
-    isOpened: {
-      type: Boolean,
-      required: true,
-    },
     className: {
       type: String,
       required: true,
@@ -212,6 +430,7 @@ export default {
   data() {
     return {
       assets: imgList,
+      isOpened: false,
       isPlayed: false,
       carouselPos: {},
       carouselPreviewPos: {},
@@ -225,7 +444,6 @@ export default {
       selected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
       notSelected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
       modalClassState: this.isOpened ? "opened" : "notOpened",
-
     };
   },
   mounted() {
@@ -233,6 +451,11 @@ export default {
     this.setStepPreview();
   },
   methods: {
+    toggleModal(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      this.isOpened = !this.isOpened;
+    },
     setStep() {
       const sliderWidth = this.$refs.imageSlider.scrollWidth;
       const totalImage = this.assets.length;
@@ -348,7 +571,6 @@ export default {
   transition: transform 0.3s ease;
 }
 
-
 .preview-item {
   height: auto;
   border-radius: 15px;
@@ -357,7 +579,7 @@ export default {
 }
 
 .selected {
-  border: 4px solid #1E40AF;
+  border: 4px solid #1e40af;
 }
 
 @media (max-width: 784px) {
@@ -377,11 +599,10 @@ export default {
   flex-direction: column;
   gap: 1rem;
   overflow: hidden;
-}
-
-.opened {
-  height: 100%;
   z-index: 100;
 }
 
+.opened {
+  scale: 1.1;
+}
 </style>
