@@ -2,7 +2,7 @@
   <div v-if="assets.length > 0" id="carousel-container" :class="isOpened ? 'opened' : 'notOpened'">
     <div
       id="main-image-viewer"
-      class="w-full h-[18rem] rounded-xl bg-white flex overflow-hidden relative"
+      class="w-full h-[22rem] rounded-xl bg-white flex overflow-hidden relative"
     >
       <div
         class="absolute z-[3] top-0 left-0 p-4 h-full flex items-center justify-center"
@@ -108,7 +108,7 @@
     </div>
     <div
       id="preview-image-list"
-      class="w-full flex items-center justify-between gap-2"
+      class="h-auto w-full flex items-center justify-between gap-2"
     >
       <button
         @click="prevPreviewSlide()"
@@ -340,7 +340,7 @@ export default {
 
 
 .preview-item {
-  height: 5rem;
+  height: auto;
   border-radius: 15px;
   flex: 0 0 20%;
   overflow: hidden;
