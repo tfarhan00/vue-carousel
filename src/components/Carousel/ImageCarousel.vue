@@ -73,13 +73,11 @@
           >
             <div
               id="video-container"
-              @click="playPauseVideo()"
               class="w-full h-full relative cursor-pointer"
               v-if="item.file_type === 'video'"
             >
               <video
                 :src="item.url"
-                ref="video"
                 class="w-full h-full object-cover"
               ></video>
               <button
