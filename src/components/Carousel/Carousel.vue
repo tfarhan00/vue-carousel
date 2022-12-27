@@ -2,7 +2,7 @@
   <ImageCarousel :isOpened="isOpened" :toggleModal="toggleModal" />
   <Transition>
     <div
-      v-if="isOpened"
+      v-show="isOpened"
       @click="toggleModal"
       class="z-[98] w-screen h-screen bg-black/40 fixed top-0 left-0 flex items-center justify-center"
     >
@@ -23,7 +23,7 @@ export default {
     };
   },
   methods: {
-    toggleModal(e) {
+    toggleModal(e, isOpen) {
       e.stopPropagation();
       e.preventDefault();
       this.isOpened = !this.isOpened;

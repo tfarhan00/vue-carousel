@@ -1,8 +1,8 @@
 <template>
-  <div v-if="assets.length > 0" id="carousel-container" :class="isOpened ? 'opened' : 'notOpened'">
+  <div v-if="assets.length > 0" id="carousel-container" v-bind:class="{ 'opened': isOpened, 'carouselContainer': true}">
     <div
       id="main-image-viewer"
-      class="w-full h-[22rem] rounded-xl bg-white flex overflow-hidden relative"
+      class="w-full h-[22rem] max-h-[24rem] rounded-xl bg-white flex overflow-hidden relative"
     >
       <div
         class="absolute z-[3] top-0 left-0 p-4 h-full flex items-center justify-center"
@@ -110,6 +110,7 @@
       id="preview-image-list"
       class="h-auto w-full flex items-center justify-between gap-2"
     >
+    <div id="prev-btn-container" class="w-20 h-full flex items-center justify-center">
       <button
         @click="prevPreviewSlide()"
         id="prev-btn"
@@ -129,9 +130,10 @@
           />
         </svg>
       </button>
+      </div>  
       <div
         id="preview-container"
-        class="h-auto flex items-center gap-2 p-2 overflow-hidden"
+        class="h-auto flex items-center overflow-x-auto lg:overflow-hidden"
       >
         <div
           id="preview-slide"
@@ -162,6 +164,8 @@
         </div>
       </div>
 
+      <div id="next-btn-container" class="w-20 h-full flex items-center justify-center">
+
       <button
         @click="nextPreviewSlide()"
         id="next-btn"
@@ -182,6 +186,8 @@
         </svg>
       </button>
     </div>
+
+    </div>
   </div>
 </template>
 
@@ -196,6 +202,10 @@ export default {
     },
     isOpened: {
       type: Boolean,
+      required: true,
+    },
+    className: {
+      type: String,
       required: true,
     },
   },
@@ -221,7 +231,6 @@ export default {
   mounted() {
     this.setStep();
     this.setStepPreview();
-    console.log(this.$refs.video[0]);
   },
   methods: {
     setStep() {
@@ -334,6 +343,7 @@ export default {
 .imagePreviewSlider {
   z-index: 1;
   display: flex;
+  justify-content: space-between;
   gap: 0.5rem;
   transition: transform 0.3s ease;
 }
@@ -352,15 +362,27 @@ export default {
 
 @media (max-width: 784px) {
   .preview-item {
-    flex: 0 0 33.3333%;
+    flex: 0 0 33.33%;
   }
 }
 
-.opened {
-  @apply z-[99] w-full max-w-[720px] bg-white rounded-xl p-6 flex flex-col justify-between gap-4;
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  overflow: hidden;
 }
 
-.notOpened {
-  @apply z-[5] w-full max-w-[720px] bg-white rounded-xl p-6 flex flex-col justify-between gap-4;
+.opened {
+  height: 100%;
+  z-index: 100;
 }
+
 </style>
