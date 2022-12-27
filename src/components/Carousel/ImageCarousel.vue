@@ -76,10 +76,7 @@
               class="w-full h-full relative cursor-pointer"
               v-if="item.file_type === 'video'"
             >
-              <video
-                :src="item.url"
-                class="w-full h-full object-cover"
-              ></video>
+              <video :src="item.url" class="w-full h-full object-cover"></video>
               <button
                 v-if="!isPlayed"
                 class="z-[1] h-20 w-20 flex items-center justify-center text-white text-2xl bg-white/20 rounded-full absolute top-[50%] left-[50%] -translate-y-[50%] -translate-x-[50%]"
@@ -136,7 +133,7 @@
           </svg>
         </button>
       </div>
-      <div id="preview-container" class="h-auto flex overflow-hidden">
+      <div id="preview-container" class="w-full h-auto flex overflow-hidden">
         <div
           id="preview-slide"
           ref="imagePreviewSlider"
@@ -193,12 +190,10 @@
     </div>
   </div>
 
-  <!-- MODAL SeCTION -->
-  <div
-    v-if="isOpened"
-    @click="toggleModal"
-    class="modal-overlay"
-  >
+  <!--**************** -->
+  <!-- MODAL SECTION -->
+  <!--**************** -->
+  <div v-if="isOpened" @click="toggleModal" class="modal-overlay">
     <div id="carousel-container" @click.stop class="carouselContainerOpen">
       <div
         id="main-image-viewer"
@@ -410,7 +405,7 @@ import { imgList } from "../../assets/imgList";
 export default {
   data() {
     return {
-      assets: imgList,
+      assets: [...imgList],
       isOpened: false,
       isPlayed: false,
       carouselPos: {},
@@ -428,9 +423,10 @@ export default {
     };
   },
   mounted() {
-    this.assets = imgList;
     this.setStep();
     this.setStepPreview();
+    console.log(this.sliderPreviewWidth);
+
   },
   methods: {
     toggleModal(e) {
@@ -462,11 +458,11 @@ export default {
       if (video.paused) {
         video.play();
         this.isPlayed = true;
-        console.log("play")
+        console.log("play");
       } else {
         video.pause();
         this.isPlayed = false;
-        console.log("pause")
+        console.log("pause");
       }
     },
     nextSlide() {
@@ -550,6 +546,7 @@ export default {
 .imagePreviewSlider {
   z-index: 1;
   display: flex;
+  width: 100%;
   gap: 0.5rem;
   transition: transform 0.3s ease;
 }
@@ -557,8 +554,8 @@ export default {
 .preview-item {
   height: auto;
   border-radius: 15px;
-  flex: 0 0 20%;
   overflow: hidden;
+  flex: 0 0 calc(20% - 0.5rem);
 }
 
 .selected {
@@ -586,8 +583,8 @@ export default {
 
 .carouselContainer {
   position: relative;
-  width: 100%;
-  max-width: 720px;
+  width: auto;
+  max-width: 800px;
   background-color: #fff;
   border-radius: 15px;
   padding: 1.5rem;
