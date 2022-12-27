@@ -375,7 +375,6 @@ export default {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 1rem;
   overflow: hidden;
 }
