@@ -2,7 +2,7 @@
   <div
     v-if="assets.length > 0"
     id="carousel-container"
-    :class="{ opened: isOpened, carouselContainer: true }"
+    class="carouselContainer"
   >
     <div
       id="main-image-viewer"
@@ -138,10 +138,7 @@
           </svg>
         </button>
       </div>
-      <div
-        id="preview-container"
-        class="h-auto flex items-center overflow-x-auto lg:overflow-hidden"
-      >
+      <div id="preview-container" class="h-auto flex overflow-hidden">
         <div
           id="preview-slide"
           ref="imagePreviewSlider"
@@ -201,13 +198,10 @@
   <!-- MODAL SeCTION -->
   <div
     v-if="isOpened"
-    @click="toggleModal()"
-    class="z-[98] w-screen h-screen bg-black/40 fixed top-0 left-0 flex items-center justify-center"
+    @click="toggleModal"
+    class="modal-overlay"
   >
-    <div
-      id="carousel-container"
-      :class="{ carouselContainer: true }"
-    >
+    <div id="carousel-container" @click.stop class="carouselContainerOpen">
       <div
         id="main-image-viewer"
         class="w-full h-[22rem] max-h-[24rem] rounded-xl bg-white flex overflow-hidden relative"
@@ -277,6 +271,7 @@
               <div
                 id="video-container"
                 @click="playPauseVideo()"
+                @click.self
                 class="w-full h-full relative cursor-pointer"
                 v-if="item.file_type === 'video'"
               >
@@ -345,10 +340,7 @@
             </svg>
           </button>
         </div>
-        <div
-          id="preview-container"
-          class="h-auto flex items-center overflow-x-auto lg:overflow-hidden"
-        >
+        <div id="preview-container" class="h-auto flex overflow-hidden">
           <div
             id="preview-slide"
             ref="imagePreviewSlider"
@@ -418,16 +410,6 @@
 import { imgList } from "../../assets/imgList";
 
 export default {
-  props: {
-    toggleModal: {
-      type: Function,
-      required: true,
-    },
-    className: {
-      type: String,
-      required: true,
-    },
-  },
   data() {
     return {
       assets: imgList,
@@ -448,6 +430,7 @@ export default {
     };
   },
   mounted() {
+    this.assets = imgList;
     this.setStep();
     this.setStepPreview();
   },
@@ -481,9 +464,11 @@ export default {
       if (video.paused) {
         video.play();
         this.isPlayed = true;
+        console.log("play")
       } else {
         video.pause();
         this.isPlayed = false;
+        console.log("pause")
       }
     },
     nextSlide() {
@@ -567,7 +552,6 @@ export default {
 .imagePreviewSlider {
   z-index: 1;
   display: flex;
-  justify-content: space-between;
   gap: 0.5rem;
   transition: transform 0.3s ease;
 }
@@ -589,6 +573,19 @@ export default {
   }
 }
 
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
 .carouselContainer {
   position: relative;
   width: 100%;
@@ -600,10 +597,20 @@ export default {
   flex-direction: column;
   gap: 1rem;
   overflow: hidden;
-  z-index: 100;
 }
 
-.opened {
+.carouselContainerOpen {
+  position: absolute;
+  width: 100%;
+  max-width: 720px;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
   scale: 1.1;
+  z-index: 100;
 }
 </style>
