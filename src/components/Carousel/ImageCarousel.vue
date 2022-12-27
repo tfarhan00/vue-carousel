@@ -131,7 +131,7 @@
       </button>
       <div
         id="preview-container"
-        class="flex items-center gap-2 p-2 overflow-hidden"
+        class="h-auto flex items-center gap-2 p-2 overflow-hidden"
       >
         <div
           id="preview-slide"
@@ -357,7 +357,7 @@ export default {
 }
 
 .opened {
-  @apply z-[99] w-full max-w-[720px] h-[32rem] bg-white rounded-xl p-6 flex flex-col justify-between gap-4;
+  @apply z-[99] w-full max-w-[720px] bg-white rounded-xl p-6 flex flex-col justify-between gap-4;
 }
 
 .notOpened {
