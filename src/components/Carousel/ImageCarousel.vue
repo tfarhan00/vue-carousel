@@ -2,7 +2,7 @@
   <div
     v-if="assets.length > 0"
     id="carousel-container"
-    v-bind:class="{ opened: isOpened, carouselContainer: true }"
+    :class="{ opened: isOpened, carouselContainer: true }"
   >
     <div
       id="main-image-viewer"
@@ -197,6 +197,7 @@
       </div>
     </div>
   </div>
+
   <!-- MODAL SeCTION -->
   <div
     v-if="isOpened"
@@ -205,7 +206,7 @@
   >
     <div
       id="carousel-container"
-      v-bind:class="{ opened: isOpened, carouselContainer: true }"
+      :class="{ carouselContainer: true }"
     >
       <div
         id="main-image-viewer"
