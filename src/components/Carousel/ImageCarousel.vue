@@ -1,0 +1,366 @@
+<template>
+  <div v-if="assets.length > 0" id="carousel-container" :class="isOpened ? 'opened' : 'notOpened'">
+    <div
+      id="main-image-viewer"
+      class="w-full h-[18rem] rounded-xl bg-white flex overflow-hidden relative"
+    >
+      <div
+        class="absolute z-[3] top-0 left-0 p-4 h-full flex items-center justify-center"
+      >
+        <button
+          @click="prevSlide()"
+          id="prev-btn"
+          class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        class="absolute z-[3] top-0 right-0 p-4 h-full flex items-center justify-center"
+      >
+        <button
+          @click="nextSlide()"
+          id="next-btn"
+          class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        id="image-slider-container"
+        @click="toggleModal"
+        class="w-full h-full flex cursor-pointer"
+      >
+        <div
+          ref="imageSlider"
+          id="image-slider"
+          :style="carouselPos"
+          class="imageSlider"
+        >
+          <div
+            id="image-preview-card"
+            v-for="item in assets"
+            :key="item.id"
+            class="w-full h-full shrink-0"
+          >
+            <div
+              id="video-container"
+              @click="playPauseVideo()"
+              class="w-full h-full relative cursor-pointer"
+              v-if="item.file_type === 'video'"
+            >
+              <video
+                :src="item.url"
+                ref="video"
+                class="w-full h-full object-cover"
+              ></video>
+              <button
+                v-if="!isPlayed"
+                class="z-[1] h-20 w-20 flex items-center justify-center text-white text-2xl bg-white/20 rounded-full absolute top-[50%] left-[50%] -translate-y-[50%] -translate-x-[50%]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="35"
+                  height="35"
+                  fill="currentColor"
+                  class="bi bi-play-circle"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  />
+                  <path
+                    d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div id="img-container" class="w-full h-full" v-else>
+              <img :src="item.url" alt="" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="preview-image-list"
+      class="w-full flex items-center justify-between gap-2"
+    >
+      <button
+        @click="prevPreviewSlide()"
+        id="prev-btn"
+        class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-chevron-left"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+          />
+        </svg>
+      </button>
+      <div
+        id="preview-container"
+        class="flex items-center gap-2 p-2 overflow-hidden"
+      >
+        <div
+          id="preview-slide"
+          ref="imagePreviewSlider"
+          :style="carouselPreviewPos"
+          class="imagePreviewSlider"
+        >
+          <div
+            v-for="(item, index) in assets"
+            :key="item.id"
+            :class="[currentSlide === index && 'selected', 'preview-item']"
+          >
+            <div
+              @click="handleImageClick(index)"
+              class="w-full h-full"
+              v-if="item.file_type === 'video'"
+            >
+              <video :src="item.url" class="w-full h-full object-cover"></video>
+            </div>
+            <div @click="handleImageClick(index)" class="w-full h-full" v-else>
+              <img
+                :src="item.url"
+                alt="image"
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        @click="nextPreviewSlide()"
+        id="next-btn"
+        class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-blue-200 text-blue-500"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-chevron-right"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</template>
+
+<script>
+import { imgList } from "../../assets/imgList";
+
+export default {
+  props: {
+    toggleModal: {
+      type: Function,
+      required: true,
+    },
+    isOpened: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      assets: imgList,
+      isPlayed: false,
+      carouselPos: {},
+      carouselPreviewPos: {},
+      sliderWidth: 0,
+      sliderPreviewWidth: 0,
+      carouselStep: 0,
+      carouselPreviewStep: 0,
+      currentSlide: 0,
+      carouselMoveX: 0,
+      carouselPreviewMoveX: 0,
+      selected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
+      notSelected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
+      modalClassState: this.isOpened ? "opened" : "notOpened",
+
+    };
+  },
+  mounted() {
+    this.setStep();
+    this.setStepPreview();
+    console.log(this.$refs.video[0]);
+  },
+  methods: {
+    setStep() {
+      const sliderWidth = this.$refs.imageSlider.scrollWidth;
+      const totalImage = this.assets.length;
+      this.sliderWidth = sliderWidth;
+      this.carouselStep = sliderWidth / totalImage;
+    },
+    setStepPreview() {
+      const sliderPreviewWidth = this.$refs.imagePreviewSlider.scrollWidth;
+      const totalImage = this.assets.length;
+      this.sliderPreviewWidth = sliderPreviewWidth;
+      this.carouselPreviewStep = sliderPreviewWidth / totalImage;
+    },
+    handleImageClick(index) {
+      this.currentSlide = index;
+      this.carouselMoveX = this.carouselStep * index;
+      this.carouselPos = {
+        transform: `translateX(-${this.carouselMoveX}px)`,
+      };
+    },
+    playPauseVideo() {
+      const video = this.$refs.video[0];
+      if (video.paused) {
+        video.play();
+        this.isPlayed = true;
+      } else {
+        video.pause();
+        this.isPlayed = false;
+      }
+    },
+    nextSlide() {
+      if (this.currentSlide === this.assets.length - 1) {
+        this.currentSlide = 0;
+      } else {
+        this.currentSlide += 1;
+      }
+      this.addStep();
+      this.carouselPos = {
+        transform: `translateX(-${this.carouselMoveX}px)`,
+      };
+    },
+    prevSlide() {
+      if (this.currentSlide === 0) {
+        this.currentSlide = this.assets.length - 1;
+      } else {
+        this.currentSlide -= 1;
+      }
+      this.substractStep();
+      this.carouselPos = {
+        transform: `translateX(-${this.carouselMoveX}px)`,
+      };
+    },
+    addStep() {
+      if (this.carouselMoveX >= this.sliderWidth - this.carouselStep) {
+        this.carouselMoveX = 0;
+      } else {
+        this.carouselMoveX += this.carouselStep;
+      }
+    },
+    substractStep() {
+      if (this.carouselMoveX <= 0) {
+        this.carouselMoveX = this.sliderWidth - this.carouselStep;
+      } else {
+        this.carouselMoveX -= this.carouselStep;
+      }
+    },
+    nextPreviewSlide() {
+      this.addPreviewStep();
+      this.carouselPreviewPos = {
+        transform: `translateX(-${this.carouselPreviewMoveX}px)`,
+      };
+      console.log(this.carouselPreviewMoveX);
+    },
+    prevPreviewSlide() {
+      this.substractPreviewStep();
+      this.carouselPreviewPos = {
+        transform: `translateX(-${this.carouselPreviewMoveX}px)`,
+      };
+      console.log(this.carouselPreviewMoveX);
+    },
+    addPreviewStep() {
+      if (
+        this.carouselPreviewMoveX >=
+        this.sliderPreviewWidth - this.carouselPreviewStep
+      ) {
+        this.carouselPreviewMoveX = 0;
+      } else {
+        this.carouselPreviewMoveX += this.carouselPreviewStep;
+      }
+    },
+    substractPreviewStep() {
+      if (this.carouselPreviewMoveX <= 0) {
+        this.carouselPreviewMoveX = 0;
+      } else {
+        this.carouselPreviewMoveX -= this.carouselPreviewStep;
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.imageSlider {
+  z-index: 1;
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.imagePreviewSlider {
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+
+.preview-item {
+  height: 5rem;
+  border-radius: 15px;
+  flex: 0 0 20%;
+  overflow: hidden;
+}
+
+.selected {
+  border: 4px solid #1E40AF;
+}
+
+@media (max-width: 784px) {
+  .preview-item {
+    flex: 0 0 33.3333%;
+  }
+}
+
+.opened {
+  @apply z-[99] w-full max-w-[720px] h-[32rem] bg-white rounded-xl p-6 flex flex-col justify-between gap-4;
+}
+
+.notOpened {
+  @apply z-[5] w-full max-w-[720px] bg-white rounded-xl p-6 flex flex-col justify-between gap-4;
+}
+</style>
