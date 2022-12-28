@@ -190,6 +190,10 @@
     </div>
   </div>
 
+  <!--**************** -->
+  <!-- MODAL SECTION -->
+  <!--**************** -->
+
   <div v-if="isOpened">
     <ImageCarouselModal
       :files="assets"
@@ -198,10 +202,6 @@
       @click="toggleModal"
     />
   </div>
-
-  <!--**************** -->
-  <!-- MODAL SECTION -->
-  <!--**************** -->
 </template>
 
 <script>
@@ -249,7 +249,7 @@ export default {
     toggleModal(e) {
       e.stopPropagation();
       e.preventDefault();
-      console.log("hello from toggle modal")
+      console.log("hello from toggle modal");
       this.isOpened = !this.isOpened;
     },
     setStep() {
