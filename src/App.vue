@@ -17,7 +17,7 @@ export default {
 
 <template>
   <div>
-    <div class="flex flex-col bg-white rounded-xl p-8">
+    <div class="flex flex-col lg:flex-row bg-white rounded-xl p-8 overflow-hidden">
       <div class="flex flex-col gap-8">
         <div>
           <span>Nama Supplier</span>
@@ -45,7 +45,9 @@ export default {
           <p class="font-semibold text-2xl">4.9</p>
         </div>
       </div>
-      <ImageCarousel :files="imgList" />
+      <div class="w-full">
+        <ImageCarousel :files="imgList" />
+      </div>
     </div>
     <div v-if="isShowButtonMore" class="w-full flex justify-center mt-2">
       <button

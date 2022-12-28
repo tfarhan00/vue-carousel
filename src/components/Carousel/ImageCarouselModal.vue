@@ -1,5 +1,6 @@
 <template>
-  <div @click="onClick" class="modal-overlay">
+  <div @click="onClick" class="modaloverlay">
+    <div class="rootcontainer">
     <div id="carousel-container" @click.stop class="carouselContainerOpen">
       <div
         id="main-image-viewer"
@@ -203,6 +204,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -240,7 +242,6 @@ export default {
       carouselPreviewMoveX: 0,
       selected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
       notSelected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
-      modalClassState: this.isOpened ? "opened" : "notOpened",
     };
   },
   mounted() {
@@ -391,34 +392,32 @@ export default {
   }
 }
 
-.modal-overlay {
+.modaloverlay {
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 99;
-}
-
-.carouselContainer {
-  position: relative;
-  width: auto;
-  max-width: 800px;
-  background-color: #fff;
-  border-radius: 15px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
   overflow: hidden;
 }
 
+.rootcontainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 .carouselContainerOpen {
-  position: absolute;
   width: 100%;
   max-width: 800px;
   background-color: #fff;
