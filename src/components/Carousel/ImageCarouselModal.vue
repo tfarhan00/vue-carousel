@@ -71,10 +71,11 @@
           >
             <div
               id="video-container"
+              @click="playPauseVideo"
               class="w-full h-full relative cursor-pointer"
               v-if="item.file_type === 'video'"
             >
-              <video :src="item.url" class="w-full h-full object-cover"></video>
+              <video ref="video" :src="item.url" class="w-full h-full object-cover"></video>
               <button
                 v-if="!isPlayed"
                 class="z-[1] h-20 w-20 flex items-center justify-center text-white text-2xl bg-white/20 rounded-full absolute top-[50%] left-[50%] -translate-y-[50%] -translate-x-[50%]"
@@ -336,8 +337,7 @@ export default {
     },
     addPreviewStep() {
       if (
-        this.carouselPreviewMoveX >=
-        this.sliderPreviewWidth - this.carouselPreviewStep
+        this.carouselPreviewMoveX > this.totalPreviewLength - (this.carouselPreviewStep * this.previewOffset + 1)
       ) {
         this.carouselPreviewMoveX = 0;
       } else {

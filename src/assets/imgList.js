@@ -36,4 +36,10 @@ export const imgList = [
     url: "https://caribarang.oss-ap-southeast-1.aliyuncs.com/supplier/info/103bf0a8-ff5e-4e75-914f-1d85e6eb91af.jpg",
     file_type: "image",
   },
-];
+  {
+    id: 41,
+    seller_id: 5694,
+    url: "https://caribarang.oss-ap-southeast-1.aliyuncs.com/supplier/info/103bf0a8-ff5e-4e75-914f-1d85e6eb91af.jpg",
+    file_type: "image",
+  },
+]

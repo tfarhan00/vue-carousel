@@ -61,6 +61,7 @@
         <div
           ref="imageSlider"
           id="image-slider"
+          @click="toggleModal"
           :style="carouselPos"
           class="imageSlider"
         >
@@ -100,15 +101,11 @@
             <div
               v-if="item.file_type === 'youtube'"
               class="w-full h-full z-[4]"
-            >
-              <iframe :src="item.url" class="w-full h-full z-[4]"></iframe>
-            </div>
-            <div
               @click="toggleModal"
-              id="img-container"
-              class="w-full h-full"
-              v-else
             >
+              <iframe :src="item.url" class="w-full h-full z-[3]"></iframe>
+            </div>
+            <div id="img-container" class="w-full h-full" v-else>
               <img :src="item.url" alt="" class="w-full h-full object-cover" />
             </div>
           </div>
@@ -261,9 +258,7 @@ export default {
     this.windowWidth = document.documentElement.clientWidth;
     this.windowHeight = document.documentElement.clientHeight;
     if (this.windowWidth < 768) {
-      this.previewOffset = 3;
-    } else {
-      this.previewOffset = 5;
+      this.previewOffset = 2;
     }
     window.addEventListener("resize", this.getDimensions);
   },
@@ -288,9 +283,7 @@ export default {
       this.windowWidth = document.documentElement.clientWidth;
       this.windowHeight = document.documentElement.clientHeight;
       if (this.windowWidth < 768) {
-      this.previewOffset = 3;
-    } else {
-      this.previewOffset = 5;
+      this.previewOffset = 2;
     }
     },
     toggleModal(e) {
@@ -380,9 +373,7 @@ export default {
     },
     addPreviewStep() {
       if (
-        this.carouselPreviewMoveX >=
-        this.totalPreviewLength -
-          this.carouselPreviewStep * (this.previewOffset)
+        this.carouselPreviewMoveX > this.totalPreviewLength - (this.carouselPreviewStep * this.previewOffset + 1)
       ) {
         this.carouselPreviewMoveX = 0;
       } else {
