@@ -287,6 +287,11 @@ export default {
       this.setStepPreview();
       this.windowWidth = document.documentElement.clientWidth;
       this.windowHeight = document.documentElement.clientHeight;
+      if (this.windowWidth < 768) {
+      this.previewOffset = 3;
+    } else {
+      this.previewOffset = 5;
+    }
     },
     toggleModal(e) {
       e.stopPropagation();
