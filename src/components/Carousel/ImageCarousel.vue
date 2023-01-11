@@ -101,9 +101,8 @@
             <div
               v-if="item.file_type === 'youtube'"
               class="w-full h-full z-[4]"
-              @click="toggleModal"
             >
-              <iframe :src="item.url" class="w-full h-full z-[3]"></iframe>
+              <iframe :src="item.url" class="w-full h-full z-[3] pointer-events-none"></iframe>
             </div>
             <div id="img-container" class="w-full h-full" v-else>
               <img :src="item.url" alt="" class="w-full h-full object-cover" />

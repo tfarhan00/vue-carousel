@@ -232,6 +232,7 @@ export default {
   data() {
     return {
       assets: [...this.files],
+      isOpened: false,
       isPlayed: false,
       carouselPos: {},
       carouselPreviewPos: {},
@@ -242,18 +243,54 @@ export default {
       currentSlide: 0,
       carouselMoveX: 0,
       carouselPreviewMoveX: 0,
+      totalPreviewLength: 0,
+      previewOffset: 5,
+      windowWidth: 0,
+      windowHeight: 0,
       selected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
       notSelected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
+      modalClassState: this.isOpened ? "opened" : "notOpened",
     };
   },
   mounted() {
-    this.currentSlide = this.currentIndex;
     this.setStep();
     this.setStepPreview();
-    this.handleImageClick(this.currentSlide);
-    console.log("mounted")
+    this.windowWidth = document.documentElement.clientWidth;
+    this.windowHeight = document.documentElement.clientHeight;
+    if (this.windowWidth < 768) {
+      this.previewOffset = 2;
+    }
+    window.addEventListener("resize", this.getDimensions);
+  },
+  unmounted() {
+    window.removeEventListener("resize", this.getDimensions);
+  },
+  watch: {
+    isOpened() {
+      this.setStep();
+      this.setStepPreview();
+    },
+    files() {
+      this.assets = [...this.files];
+      this.setStep();
+      this.setStepPreview();
+    },
   },
   methods: {
+    getDimensions() {
+      this.setStep();
+      this.setStepPreview();
+      this.windowWidth = document.documentElement.clientWidth;
+      this.windowHeight = document.documentElement.clientHeight;
+      if (this.windowWidth < 768) {
+      this.previewOffset = 2;
+    }
+    },
+    toggleModal(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      this.isOpened = !this.isOpened;
+    },
     setStep() {
       const sliderWidth = this.$refs.imageSlider.scrollWidth;
       const totalImage = this.assets.length;
@@ -265,6 +302,7 @@ export default {
       const totalImage = this.assets.length;
       this.sliderPreviewWidth = sliderPreviewWidth;
       this.carouselPreviewStep = sliderPreviewWidth / totalImage;
+      this.totalPreviewLength = this.carouselPreviewStep * totalImage;
     },
     handleImageClick(index) {
       this.currentSlide = index;
@@ -326,14 +364,12 @@ export default {
       this.carouselPreviewPos = {
         transform: `translateX(-${this.carouselPreviewMoveX}px)`,
       };
-      console.log(this.carouselPreviewMoveX);
     },
     prevPreviewSlide() {
       this.substractPreviewStep();
       this.carouselPreviewPos = {
         transform: `translateX(-${this.carouselPreviewMoveX}px)`,
       };
-      console.log(this.carouselPreviewMoveX);
     },
     addPreviewStep() {
       if (
