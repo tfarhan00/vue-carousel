@@ -103,7 +103,12 @@
             >
               <iframe :src="item.url" class="w-full h-full z-[4]"></iframe>
             </div>
-            <div @click="toggleModal" id="img-container" class="w-full h-full" v-else>
+            <div
+              @click="toggleModal"
+              id="img-container"
+              class="w-full h-full"
+              v-else
+            >
               <img :src="item.url" alt="" class="w-full h-full object-cover" />
             </div>
           </div>
@@ -242,7 +247,7 @@ export default {
       carouselMoveX: 0,
       carouselPreviewMoveX: 0,
       totalPreviewLength: 0,
-      previewOffset: 0,
+      previewOffset: 5,
       windowWidth: 0,
       windowHeight: 0,
       selected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
@@ -256,7 +261,7 @@ export default {
     this.windowWidth = document.documentElement.clientWidth;
     this.windowHeight = document.documentElement.clientHeight;
     if (this.windowWidth < 768) {
-      this.previewOffset = 2;
+      this.previewOffset = 3;
     } else {
       this.previewOffset = 5;
     }
@@ -282,11 +287,6 @@ export default {
       this.setStepPreview();
       this.windowWidth = document.documentElement.clientWidth;
       this.windowHeight = document.documentElement.clientHeight;
-      if (this.windowWidth < 768) {
-        this.previewOffset = 3;
-      } else {
-        this.previewOffset = 5;
-      }
     },
     toggleModal(e) {
       e.stopPropagation();
@@ -377,7 +377,7 @@ export default {
       if (
         this.carouselPreviewMoveX >=
         this.totalPreviewLength -
-          this.carouselPreviewStep * (this.previewOffset + 1)
+          this.carouselPreviewStep * (this.previewOffset)
       ) {
         this.carouselPreviewMoveX = 0;
       } else {

@@ -36,28 +36,4 @@ export const imgList = [
     url: "https://caribarang.oss-ap-southeast-1.aliyuncs.com/supplier/info/103bf0a8-ff5e-4e75-914f-1d85e6eb91af.jpg",
     file_type: "image",
   },
-  {
-    id: 212,
-    seller_id: 5694,
-    url: "https://caribarang.oss-ap-southeast-1.aliyuncs.com/supplier/info/676f4e01-f51e-472f-b350-58c963e4f372.png",
-    file_type: "image",
-  },
-  {
-    id: 421,
-    seller_id: 5694,
-    url: "https://caribarang.oss-ap-southeast-1.aliyuncs.com/supplier/info/676f4e01-f51e-472f-b350-58c963e4f372.png",
-    file_type: "image",
-  },
-  {
-    id: 425,
-    seller_id: 5694,
-    url: "https://caribarang.oss-ap-southeast-1.aliyuncs.com/supplier/info/676f4e01-f51e-472f-b350-58c963e4f372.png",
-    file_type: "image",
-  },
-  {
-    id: 142,
-    seller_id: 5694,
-    url: "https://caribarang.oss-ap-southeast-1.aliyuncs.com/supplier/info/676f4e01-f51e-472f-b350-58c963e4f372.png",
-    file_type: "image",
-  },
 ];
