@@ -27,7 +27,7 @@ export default {
         </div>
         <div>
           <span>Alamat Supplier</span>
-          <p class="w-[450px] text-base font-semibold">
+          <p class="max-w-[450px] text-base font-semibold">
             Nanyu Building Material Plaza,No.138 Tanwei Rd., Liwan
             District,Guangzhou,China
           </p>

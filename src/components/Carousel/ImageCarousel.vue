@@ -9,12 +9,12 @@
       class="w-full h-[22rem] max-h-[24rem] rounded-xl bg-white flex overflow-hidden relative"
     >
       <div
-        class="absolute z-[3] top-0 left-0 p-4 h-full flex items-center justify-center"
+        class="absolute top-0 left-0 p-4 h-full flex items-center justify-center"
       >
         <button
           @click="prevSlide()"
           id="prev-btn"
-          class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
+          class="w-8 h-8 z-[97] shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -32,12 +32,12 @@
         </button>
       </div>
       <div
-        class="absolute z-[3] top-0 right-0 p-4 h-full flex items-center justify-center"
+        class="absolute top-0 right-0 p-4 h-full flex items-center justify-center"
       >
         <button
           @click="nextSlide()"
           id="next-btn"
-          class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
+          class="w-8 h-8 z-[97] shrink-0 rounded-full flex items-center justify-center bg-white/50 text-white"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +56,6 @@
       </div>
       <div
         id="image-slider-container"
-        @click="toggleModal"
         class="w-full h-full flex cursor-pointer"
       >
         <div
@@ -98,7 +97,13 @@
                 </svg>
               </button>
             </div>
-            <div id="img-container" class="w-full h-full" v-else>
+            <div
+              v-if="item.file_type === 'youtube'"
+              class="w-full h-full z-[4]"
+            >
+              <iframe :src="item.url" class="w-full h-full z-[4]"></iframe>
+            </div>
+            <div @click="toggleModal" id="img-container" class="w-full h-full" v-else>
               <img :src="item.url" alt="" class="w-full h-full object-cover" />
             </div>
           </div>
@@ -151,6 +156,17 @@
               v-if="item.file_type === 'video'"
             >
               <video :src="item.url" class="w-full h-full object-cover"></video>
+            </div>
+            <div
+              @click="handleImageClick(index)"
+              v-if="item.file_type === 'youtube'"
+              class="w-full h-full"
+            >
+              <img
+                :src="item.thumbnailUrl"
+                alt="image"
+                class="w-full h-full object-cover"
+              />
             </div>
             <div @click="handleImageClick(index)" class="w-full h-full" v-else>
               <img
@@ -225,6 +241,10 @@ export default {
       currentSlide: 0,
       carouselMoveX: 0,
       carouselPreviewMoveX: 0,
+      totalPreviewLength: 0,
+      previewOffset: 0,
+      windowWidth: 0,
+      windowHeight: 0,
       selected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
       notSelected: "w-24 h-20 rounded-xl ring-4 ring-slate-700",
       modalClassState: this.isOpened ? "opened" : "notOpened",
@@ -233,6 +253,17 @@ export default {
   mounted() {
     this.setStep();
     this.setStepPreview();
+    this.windowWidth = document.documentElement.clientWidth;
+    this.windowHeight = document.documentElement.clientHeight;
+    if (this.windowWidth < 768) {
+      this.previewOffset = 2;
+    } else {
+      this.previewOffset = 5;
+    }
+    window.addEventListener("resize", this.getDimensions);
+  },
+  unmounted() {
+    window.removeEventListener("resize", this.getDimensions);
   },
   watch: {
     isOpened() {
@@ -246,10 +277,20 @@ export default {
     },
   },
   methods: {
+    getDimensions() {
+      this.setStep();
+      this.setStepPreview();
+      this.windowWidth = document.documentElement.clientWidth;
+      this.windowHeight = document.documentElement.clientHeight;
+      if (this.windowWidth < 768) {
+        this.previewOffset = 3;
+      } else {
+        this.previewOffset = 5;
+      }
+    },
     toggleModal(e) {
       e.stopPropagation();
       e.preventDefault();
-      console.log("hello from toggle modal");
       this.isOpened = !this.isOpened;
     },
     setStep() {
@@ -263,6 +304,7 @@ export default {
       const totalImage = this.assets.length;
       this.sliderPreviewWidth = sliderPreviewWidth;
       this.carouselPreviewStep = sliderPreviewWidth / totalImage;
+      this.totalPreviewLength = this.carouselPreviewStep * totalImage;
     },
     handleImageClick(index) {
       this.currentSlide = index;
@@ -324,19 +366,18 @@ export default {
       this.carouselPreviewPos = {
         transform: `translateX(-${this.carouselPreviewMoveX}px)`,
       };
-      console.log(this.carouselPreviewMoveX);
     },
     prevPreviewSlide() {
       this.substractPreviewStep();
       this.carouselPreviewPos = {
         transform: `translateX(-${this.carouselPreviewMoveX}px)`,
       };
-      console.log(this.carouselPreviewMoveX);
     },
     addPreviewStep() {
       if (
         this.carouselPreviewMoveX >=
-        this.sliderPreviewWidth - this.carouselPreviewStep
+        this.totalPreviewLength -
+          this.carouselPreviewStep * (this.previewOffset + 1)
       ) {
         this.carouselPreviewMoveX = 0;
       } else {
